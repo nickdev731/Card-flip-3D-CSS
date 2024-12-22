@@ -1,0 +1,231 @@
+:root {
+    --liquid-primary: #6a11cb;
+    --liquid-secondary: #2575fc;
+    --liquid-background: #f4f4f6;
+    --liquid-text: #ffffff;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--liquid-background);
+    font-family: 'Inter', sans-serif;
+    perspective: 3000px;
+    overflow: hidden;
+}
+
+.liquid-3d-card {
+    width: 400px;
+    height: 550px;
+    position: relative;
+}
+
+.liquid-card-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.card-toggle:checked ~ .liquid-card-wrapper {
+    transform: 
+        rotateY(180deg) 
+        translateZ(50px) 
+        scale(1.05);
+}
+
+.liquid-card-front,
+.liquid-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    transition: all 0.8s ease;
+}
+
+.liquid-card-front {
+    background: linear-gradient(
+        135deg, 
+        var(--liquid-primary), 
+        var(--liquid-secondary)
+    );
+    transform: translateZ(0);
+    z-index: 2;
+}
+
+.liquid-card-back {
+    background: linear-gradient(
+        -135deg, 
+        var(--liquid-secondary), 
+        var(--liquid-primary)
+    );
+    transform: rotateY(180deg) translateZ(-50px);
+}
+
+.water-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.05);
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.front-water-layer,
+.back-water-layer {
+    animation: water-flow 10s ease-in-out infinite alternate;
+}
+
+@keyframes water-flow {
+    0% {
+        transform: 
+            skew(1deg, 1deg) 
+            scale(1.01) 
+            rotate(-1deg);
+        background-position: 0 0;
+    }
+    50% {
+        transform: 
+            skew(-1deg, -1deg) 
+            scale(1.02) 
+            rotate(1deg);
+        background-position: 100% 100%;
+    }
+    100% {
+        transform: 
+            skew(1deg, 1deg) 
+            scale(1.01) 
+            rotate(-1deg);
+        background-position: 0 0;
+    }
+}
+
+.water-morph-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    perspective: 500px;
+}
+
+.water-morph {
+    position: absolute;
+    width: 300%;
+    height: 300%;
+    top: -100%;
+    left: -100%;
+    background: 
+        linear-gradient(
+            45deg, 
+            rgba(255,255,255,0.1), 
+            rgba(255,255,255,0.03)
+        );
+    animation: advanced-water-morph 12s ease-in-out infinite alternate;
+    filter: blur(40px);
+    transform-origin: center center;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform-style: preserve-3d;
+}
+
+@keyframes advanced-water-morph {
+    0% {
+        transform: 
+            rotate(-45deg) 
+            scale(0.8) 
+            skew(5deg, 5deg)
+            translateZ(-100px);
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    }
+    50% {
+        transform: 
+            rotate(45deg) 
+            scale(1.2) 
+            skew(-5deg, -5deg)
+            translateZ(100px);
+        border-radius: 60% 40% 50% 70% / 60% 40% 50% 70%;
+    }
+    100% {
+        transform: 
+            rotate(-45deg) 
+            scale(0.9) 
+            skew(5deg, 5deg)
+            translateZ(-50px);
+        border-radius: 50% 40% 60% 30% / 50% 60% 40% 70%;
+    }
+}
+
+.liquid-blob {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    filter: blur(40px);
+    animation: blob-float 8s ease-in-out infinite alternate;
+    transform-style: preserve-3d;
+}
+
+@keyframes blob-float {
+    0% { 
+        transform: 
+            translate(0, 0) 
+            rotate(0deg)
+            translateZ(-50px);
+    }
+    100% { 
+        transform: 
+            translate (20px, 20px) 
+            rotate(360deg)
+            translateZ(-30px);
+    }
+}
+
+.liquid-title h2, .liquid-title p, .liquid-details h3 {
+    color: var(--liquid-text);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.liquid-info, .experience-section {
+    color: var(--liquid-text);
+    text-align: center;
+}
+
+.info-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.info-section i {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.skill-tags span {
+    background: rgba(255,255,255,0.2);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--liquid-text);
+}
+
+@media (max-width: 600px) {
+    .liquid-3d-card {
+        width: 90%;
+        height: auto;
+    }
+}
